@@ -2,3 +2,4 @@ Using CURL
 
 curl http://localhost:3000/pagamentos/pagamento -X POST -v -H "Content-type: application/json" -d '{}'
 curl http://localhost:3000/pagamentos/pagamento -X POST -v -H "Content-type: application/json" -d @files/payment.json
+curl http://localhost:3000/pagamentos/pagamento/9 -T -v

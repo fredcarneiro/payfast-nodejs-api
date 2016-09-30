@@ -14,6 +14,11 @@ PaymentDAO.prototype.searchById = function(id, callback){
   this._connection.query('SELECT * FROM payments where id = ?', [id], callback);
 }
 
+PaymentDAO.prototype.updatePayment = function(payment, callback){
+  this._connection.query('UPDATE payments SET status = ? where id = ?', [payment.status, payment.id], callback);
+}
+
+
 module.exports = function(){
     return PaymentDAO;
 };

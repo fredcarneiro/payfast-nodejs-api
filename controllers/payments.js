@@ -4,6 +4,30 @@ module.exports = function (app){
     response.send('Ok 2');
   });
 
+  app.put('/pagamentos/pagamento/:id', function(request, response){
+
+    var id = request.params.id;
+    var payment = {};
+
+    payment.id = id;
+    payment.status = 'CONFIRMED';
+
+    var connection = app.persist.connectionFactory();
+    var paymentDao = new app.persist.PaymentDAO(connection);
+
+    paymentDao.updatePayment(payment, function(error){
+
+      if (error) {
+        response.status(500).send(error);
+        return;
+      }
+
+      response.send(payment);
+
+    });
+
+  });
+
   app.post('/pagamentos/pagamento', function(request, response){
 
     request.assert('payment_form', 'Payment form is required.').notEmpty();
