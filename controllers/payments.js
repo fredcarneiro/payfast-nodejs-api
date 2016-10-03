@@ -4,6 +4,30 @@ module.exports = function (app){
     response.send('Ok 2');
   });
 
+  app.delete('/pagamentos/pagamento/:id', function(request, response){
+
+    var id = request.params.id;
+    var payment = {};
+
+    payment.id = id;
+    payment.status = 'CANCELADO';
+
+    var connection = app.persist.connectionFactory();
+    var paymentDao = new app.persist.PaymentDAO(connection);
+
+    paymentDao.updatePayment(payment, function(error){
+
+      if (error) {
+        response.status(500).send(error);
+        return;
+      }
+
+      response.status(204).send(payment);
+
+    });
+
+  });
+
   app.put('/pagamentos/pagamento/:id', function(request, response){
 
     var id = request.params.id;
