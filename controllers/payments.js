@@ -82,9 +82,29 @@ module.exports = function (app){
         response.status(500).send('Error while inserting:' + error);
         console.log(error);
       }else{
+
+        pagamento.id = result.insertId;
+
         console.log('payment created');
-        response.location('/payments/payment/' + result.insertId);
-        response.status(201).json(payment);
+        response.location('/payments/payment/' + pagamento.id);
+
+        var response = {
+          payment_info: payment,
+          links: [
+            {
+              href: "/payments/payment/" + pagamento.id,
+              rel: "confirm",
+              method: "PUT"
+            },
+            {
+              href: "/payments/payment/" + pagamento.id,
+              rel: "cancel",
+              method: "DELETE"
+            }
+          ]
+        }
+
+        response.status(201).json(response);
       }
 
     });
