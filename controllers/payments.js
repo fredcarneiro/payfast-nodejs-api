@@ -54,9 +54,9 @@ module.exports = function (app){
 
   app.post('/pagamentos/pagamento', function(request, response){
 
-    request.assert('payment_form', 'Payment form is required.').notEmpty();
-    request.assert('value', 'Value is required.').notEmpty();
-    request.assert('value', 'Value must be Decimal Number.').isFloat();
+    request.assert('payment.payment_form', 'Payment form is required.').notEmpty();
+    request.assert('payment.value', 'Value is required.').notEmpty();
+    request.assert('payment.value', 'Value must be Decimal Number.').isFloat();
 
     var validation_errors = request.validationErrors();
 
@@ -66,7 +66,7 @@ module.exports = function (app){
       return;
     }
 
-    var payment = request.body;
+    var payment = request.body["payment"];
 
     console.log('processing new payment.');
 
@@ -86,6 +86,17 @@ module.exports = function (app){
         pagamento.id = result.insertId;
 
         console.log('payment created');
+
+        if (payment.payment_form == 'card') {
+          var card = request.body["card"];
+
+          cardClient.authorize(card);
+
+          response.status(201).json(response);
+          console.log(card);
+          return;
+        }
+
         response.location('/payments/payment/' + pagamento.id);
 
         var response = {

@@ -1,6 +1,15 @@
 {
-  "payment_form": "payfast",
-  "value": 10,
-  "currency": "BRL",
-  "description": "creating a payment"
+  "payment": {
+    "payment_form": "card",
+    "value": 10,
+    "currency": "BRL",
+    "description": "creating a payment"
+  },
+  "card": {
+    "numero": 1234123412341234,
+    "bandeira": "visa",
+    "ano_de_expiracao": 2016,
+    "mes_de_expiracao": 12,
+    "cvv": 123
+  }
 }
