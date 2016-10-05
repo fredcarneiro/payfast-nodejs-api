@@ -13,6 +13,7 @@ module.exports = function(){
   consign()
     .include('controllers')
     .then('persist')
+    .then('services')
     .into(app);
 
   return app;

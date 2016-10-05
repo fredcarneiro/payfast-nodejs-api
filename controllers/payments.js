@@ -89,33 +89,35 @@ module.exports = function (app){
 
         if (payment.payment_form == 'card') {
           var card = request.body["card"];
+          var cardClient = new app.services.cardsClients();
 
-          cardClient.authorize(card);
+          cardClient.authorize(card, function(exception, req, res, retorno){
+            console.log(retorno);
+            response.status(201).json(retorno);
+            return;
+          });
+        }else{
+
+          response.location('/payments/payment/' + pagamento.id);
+
+          var response = {
+            payment_info: payment,
+            links: [
+              {
+                href: "/payments/payment/" + pagamento.id,
+                rel: "confirm",
+                method: "PUT"
+              },
+              {
+                href: "/payments/payment/" + pagamento.id,
+                rel: "cancel",
+                method: "DELETE"
+              }
+            ]
+          }
 
           response.status(201).json(response);
-          console.log(card);
-          return;
         }
-
-        response.location('/payments/payment/' + pagamento.id);
-
-        var response = {
-          payment_info: payment,
-          links: [
-            {
-              href: "/payments/payment/" + pagamento.id,
-              rel: "confirm",
-              method: "PUT"
-            },
-            {
-              href: "/payments/payment/" + pagamento.id,
-              rel: "cancel",
-              method: "DELETE"
-            }
-          ]
-        }
-
-        response.status(201).json(response);
       }
 
     });
