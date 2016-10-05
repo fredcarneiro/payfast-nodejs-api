@@ -92,8 +92,36 @@ module.exports = function (app){
           var cardClient = new app.services.cardsClients();
 
           cardClient.authorize(card, function(exception, req, res, retorno){
+
+            if (exception) {
+              console.log(exception);
+              res.status(400).send(exception);
+              return;
+            }
+
             console.log(retorno);
-            response.status(201).json(retorno);
+
+            response.location('/payments/payment/' + pagamento.id);
+
+            var response = {
+              payment_info: payment,
+              card_info: card, 
+              links: [
+                {
+                  href: "/payments/payment/" + pagamento.id,
+                  rel: "confirm",
+                  method: "PUT"
+                },
+                {
+                  href: "/payments/payment/" + pagamento.id,
+                  rel: "cancel",
+                  method: "DELETE"
+                }
+              ]
+            }
+
+
+            response.status(201).json(response);
             return;
           });
         }else{
