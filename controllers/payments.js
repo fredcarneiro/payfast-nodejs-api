@@ -10,7 +10,7 @@ module.exports = function (app){
     var payment = {};
 
     payment.id = id;
-    payment.status = 'CANCELADO';
+    payment.status = 'CANCELLED';
 
     var connection = app.persist.connectionFactory();
     var paymentDao = new app.persist.PaymentDAO(connection);
@@ -83,37 +83,37 @@ module.exports = function (app){
         console.log(error);
       }else{
 
-        pagamento.id = result.insertId;
+        payment.id = result.insertId;
 
         console.log('payment created');
 
         if (payment.payment_form == 'card') {
           var card = request.body["card"];
-          var cardClient = new app.services.cardsClients();
+          var cardClient = new app.services.cardsClient();
 
           cardClient.authorize(card, function(exception, req, res, retorno){
 
             if (exception) {
               console.log(exception);
-              res.status(400).send(exception);
+              response.status(400).send(exception);
               return;
             }
 
             console.log(retorno);
 
-            response.location('/payments/payment/' + pagamento.id);
+            response.location('/payments/payment/' + payment.id);
 
-            var response = {
+            var response_to_client = {
               payment_info: payment,
-              card_info: card, 
+              card_info: card,
               links: [
                 {
-                  href: "/payments/payment/" + pagamento.id,
+                  href: "/payments/payment/" + payment.id,
                   rel: "confirm",
                   method: "PUT"
                 },
                 {
-                  href: "/payments/payment/" + pagamento.id,
+                  href: "/payments/payment/" + payment.id,
                   rel: "cancel",
                   method: "DELETE"
                 }
@@ -121,30 +121,30 @@ module.exports = function (app){
             }
 
 
-            response.status(201).json(response);
+            response.status(201).json(response_to_client);
             return;
           });
         }else{
 
-          response.location('/payments/payment/' + pagamento.id);
+          response.location('/payments/payment/' + payment.id);
 
-          var response = {
+          var response_to_client = {
             payment_info: payment,
             links: [
               {
-                href: "/payments/payment/" + pagamento.id,
+                href: "/payments/payment/" + payment.id,
                 rel: "confirm",
                 method: "PUT"
               },
               {
-                href: "/payments/payment/" + pagamento.id,
+                href: "/payments/payment/" + payment.id,
                 rel: "cancel",
                 method: "DELETE"
               }
             ]
           }
 
-          response.status(201).json(response);
+          response.status(201).json(response_to_client);
         }
       }
 
