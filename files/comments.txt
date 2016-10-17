@@ -7,6 +7,8 @@ curl http://localhost:3000/pagamentos/pagamento/9 -X DELETE -v
 
 curl http://localhost:3000/correios/calculo-prazo -X POST -v -H "Content-type: application/json" -d @files/dados-entrega.json
 
+curl http://localhost:3000/upload/image -X POST --data-binary @files/image.jpg -H "Content-type: application/octet-stream" -v -H "filename: imagem_enviado.jpg"
+
 HATEOAS
 
 HYPERMEDIA
