@@ -9,6 +9,8 @@ curl http://localhost:3000/correios/calculo-prazo -X POST -v -H "Content-type: a
 
 curl http://localhost:3000/upload/image -X POST --data-binary @files/image.jpg -H "Content-type: application/octet-stream" -v -H "filename: imagem_enviado.jpg"
 
+curl -X GET http://localhost:3000/pagamentos/pagamento/9 -v
+
 HATEOAS
 
 HYPERMEDIA

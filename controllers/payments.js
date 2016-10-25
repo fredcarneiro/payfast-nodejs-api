@@ -4,6 +4,30 @@ module.exports = function (app){
     response.send('Ok 2');
   });
 
+  app.get('/pagamentos/pagamento/:id', function(request, response){
+    var id = request.params.id;
+    console.log('consulting payment: ' + id);
+
+    var connection = app.persist.connectionFactory();
+    var paymentDao = new app.persist.PaymentDAO(connection);
+
+    paymentDao.searchById(id, function(error, result){
+      if (error) {
+        console.log('Erro ao consultar no banco: ' + error);
+        response.status(500).send();
+        return;
+      }
+
+      console.log('Pagamento encontrado: ' + JSON.stringify(result));
+      response.json(result);
+
+      return;
+
+
+    });
+
+  });
+
   app.delete('/pagamentos/pagamento/:id', function(request, response){
 
     var id = request.params.id;
