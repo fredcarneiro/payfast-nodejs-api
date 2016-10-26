@@ -1,27 +1,17 @@
 var memcached = require('memcached');
 
-var client = new memcached('localhost:11211', {
-  retries: 10,
-  retry: 10000,
-  remove: true
-});
+function createMemcachedClient(){
 
-/*client.set('payment-20',
-  {
-    'id': 20
-  },
-  60000,
-  function(error){
-    console.log('New key added to memcached. payment-20.');
-  }
-);*/
+  var client = new memcached('localhost:11211', {
+    retries: 10,
+    retry: 10000,
+    remove: true
+  });
 
-client.get('payment-20', function(error, data){
+  return client;
+}
 
-  if (error || !data) {
-    console.log("MISS - key not founded");
-  }else{
-    console.log("HIT - key founded. " + JSON.stringify(data));
-  }
 
-});
+module.exports = function(){
+  return createMemcachedClient;
+}

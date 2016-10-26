@@ -8,21 +8,35 @@ module.exports = function (app){
     var id = request.params.id;
     console.log('consulting payment: ' + id);
 
-    var connection = app.persist.connectionFactory();
-    var paymentDao = new app.persist.PaymentDAO(connection);
+    var memcachedClient = app.services.memcachedClient();
 
-    paymentDao.searchById(id, function(error, result){
-      if (error) {
-        console.log('Erro ao consultar no banco: ' + error);
-        response.status(500).send();
+    memcachedClient.get('payment-' + id, function(error, data){
+
+      if (error || !data) {
+        console.log("MISS - key not founded");
+
+        var connection = app.persist.connectionFactory();
+        var paymentDao = new app.persist.PaymentDAO(connection);
+
+        paymentDao.searchById(id, function(error, result){
+          if (error) {
+            console.log('Erro ao consultar no banco: ' + error);
+            response.status(500).send();
+            return;
+          }
+
+          console.log('Pagamento encontrado: ' + JSON.stringify(result));
+          response.json(result);
+
+          return;
+        });
+      //HIT no cache
+      }else{
+        console.log("HIT - key founded. Pagamento encontrado." + JSON.stringify(data));
+        response.json(data);
+
         return;
       }
-
-      console.log('Pagamento encontrado: ' + JSON.stringify(result));
-      response.json(result);
-
-      return;
-
 
     });
 
@@ -110,6 +124,14 @@ module.exports = function (app){
         payment.id = result.insertId;
 
         console.log('payment created');
+
+        var memcachedClient = app.services.memcachedClient();
+
+        memcachedClient.set('payment-'+payment.id, payment, 60000,
+          function(error){
+            console.log('New key added to memcached. payment-'+payment.id);
+          }
+        );
 
         if (payment.payment_form == 'card') {
           var card = request.body["card"];
