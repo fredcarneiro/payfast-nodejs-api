@@ -1,0 +1,11 @@
+{"level":"info","message":"using INFO level","timestamp":"2016-10-27T11:15:54.637Z"}
+{"level":"info","message":"using log with INFO 2","timestamp":"2016-10-27T11:15:54.639Z"}
+{"level":"info","message":"using INFO level","timestamp":"2016-10-27T11:20:56.699Z"}
+{"level":"info","message":"using log with INFO 2","timestamp":"2016-10-27T11:20:56.701Z"}
+{"level":"info","message":"using INFO level","timestamp":"2016-10-27T11:22:48.671Z"}
+{"level":"info","message":"using log with INFO 2","timestamp":"2016-10-27T11:22:48.675Z"}
+{"level":"info","message":"using INFO level","timestamp":"2016-10-27T11:23:08.683Z"}
+{"level":"info","message":"using log with INFO 2","timestamp":"2016-10-27T11:23:08.685Z"}
+{"level":"info","message":"consulting payment: 9","timestamp":"2016-10-27T11:26:36.532Z"}
+{"level":"info","message":"consulting payment: 14","timestamp":"2016-10-27T11:26:52.223Z"}
+{"level":"info","message":"consulting payment: 14","timestamp":"2016-10-27T11:27:38.014Z"}

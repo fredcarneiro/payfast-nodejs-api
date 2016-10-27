@@ -1,3 +1,5 @@
+var logger = require('../services/logger.js');
+
 module.exports = function (app){
 
   app.get('/pagamentos', function(request, response){
@@ -6,33 +8,34 @@ module.exports = function (app){
 
   app.get('/pagamentos/pagamento/:id', function(request, response){
     var id = request.params.id;
-    console.log('consulting payment: ' + id);
+
+    logger.info('consulting payment: ' + id);
 
     var memcachedClient = app.services.memcachedClient();
 
     memcachedClient.get('payment-' + id, function(error, data){
 
       if (error || !data) {
-        console.log("MISS - key not founded");
+        logger.info("MISS - key not founded");
 
         var connection = app.persist.connectionFactory();
         var paymentDao = new app.persist.PaymentDAO(connection);
 
         paymentDao.searchById(id, function(error, result){
           if (error) {
-            console.log('Erro ao consultar no banco: ' + error);
+            logger.info('Erro ao consultar no banco: ' + error);
             response.status(500).send();
             return;
           }
 
-          console.log('Pagamento encontrado: ' + JSON.stringify(result));
+          logger.info('Pagamento encontrado: ' + JSON.stringify(result));
           response.json(result);
 
           return;
         });
       //HIT no cache
       }else{
-        console.log("HIT - key founded. Pagamento encontrado." + JSON.stringify(data));
+        logger.info("HIT - key founded. Pagamento encontrado." + JSON.stringify(data));
         response.json(data);
 
         return;
