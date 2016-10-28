@@ -9,3 +9,11 @@
 {"level":"info","message":"consulting payment: 9","timestamp":"2016-10-27T11:26:36.532Z"}
 {"level":"info","message":"consulting payment: 14","timestamp":"2016-10-27T11:26:52.223Z"}
 {"level":"info","message":"consulting payment: 14","timestamp":"2016-10-27T11:27:38.014Z"}
+{"level":"info","message":"consulting payment: 9","timestamp":"2016-10-28T12:30:35.259Z"}
+{"level":"info","message":"MISS - key not founded","timestamp":"2016-10-28T12:30:35.293Z"}
+{"level":"info","message":"Erro ao consultar no banco: Error: connect ECONNREFUSED 127.0.0.1:3306","timestamp":"2016-10-28T12:30:37.819Z"}
+{"level":"info","message":"::1 - - [28/Oct/2016:12:30:37 +0000] \"GET /pagamentos/pagamento/9 HTTP/1.1\" 500 -\n","timestamp":"2016-10-28T12:30:37.830Z"}
+{"level":"info","message":"consulting payment: 9","timestamp":"2016-10-28T12:31:38.084Z"}
+{"level":"info","message":"MISS - key not founded","timestamp":"2016-10-28T12:31:38.096Z"}
+{"level":"info","message":"Pagamento encontrado: [{\"id\":9,\"payment_form\":\"card\",\"value\":10,\"currency\":\"BRL\",\"description\":\"creating a payment\",\"status\":\"CANCELADO\",\"data\":\"2016-10-11T03:00:00.000Z\"}]","timestamp":"2016-10-28T12:31:38.214Z"}
+{"level":"info","message":"::1 - - [28/Oct/2016:12:31:38 +0000] \"GET /pagamentos/pagamento/9 HTTP/1.1\" 200 150\n","timestamp":"2016-10-28T12:31:38.224Z"}
